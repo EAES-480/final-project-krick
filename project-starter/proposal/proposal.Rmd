@@ -1,16 +1,109 @@
 ---
 title: "Project proposal"
-author: "Team name"
+author: "Rachel Krick"
 output: html_document
 ---
 
 ```{r load-packages, message = FALSE}
 library(tidyverse)
 library(broom)
+library(lubridate)
+library(janitor)
 ```
 
-## 1. Data
+## 1. Data/Introduction
+```{r load_data, echo=TRUE, eval= TRUE }
+invasivesp <- read_csv("../data/Mueller_buckthorn_gradient_JAE_2018_Dryad_data.csv")%>%
+  clean_names()%>%
+  drop_na()
+
+glimpse (invasivesp)
+```
+
+> My data comes from a research article titled "A tale of two studies: Detection and attribution of the impacts of invasive plants in observational surveys" by Kevin E. Mueller, Alexandra G. Lodge, Alexander M. Roth, Timothy J. S. Whitfeld, Sarah E. Hobbie, Peter B. Reich. This study looked at how invasive plant species influence ecological properties. They also aimed to "highlight ways of improving the design and interpretation of observational studies that assess the impacts of invasive plants."  The dataset combines two different methods of sampling: (1) large-scale stratified sampling of vegetation  across multiple sites where researchers recorded species composition, abundance, and environmental variables in areas with and without invasive plants, and (2) finer-scale paired-plot studies, where invaded plots were directly matched with nearby uninvaded plots under similar conditions to better isolate invasion effects. The data has `r nrow(invasivesp)` observations and `r ncol(invasivesp)` variables. For my final project I would like to look at the impact of the invasive species (Rhamnus cathartica orbuck thorn) specifically on earth worm biomass. I will also aim to observe whether soil type impacts earthworm biomass and the invasive species. This might give me insights into how soil conditions affect how invasive species impact earthworm biomass. 
+
+> **Research Questions:** Is their a statistically significant relationship between the invasive species and and the earth worm biomass? What does this mean for how the invasive species impacts earthworm biomass? How does the mean earthworm biomass vary by soil type? Is there a statistically signifcant difference in the means? How does the mean number of buckthorn stems vary by soil type? Is there a statistically signifcant difference in the means? What does this mean for how soil type might play a role in the relationship between invasive species and earthworm biomass? 
+
 
 ## 2. Exploratory Visualization
+```{r smooth_lm, echo=TRUE, eval = TRUE}
 
-## 3. Possible question and method
+ggplot(invasivesp, aes(x =buckthorn_stems_per_m2_subplot, y = earthworm_biomass_g_per_m2)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", se = TRUE, color="darkgreen") +
+  labs(
+    x = "Buckthorn Stems",
+    y = "Earthworm Biomass (g/m2)",
+    title = "Scatterplot with linear fit"
+  ) +
+  theme_classic(base_size = 20)
+```
+
+```{r fit_lm, echo=TRUE, eval = TRUE}
+m1 <- lm( earthworm_biomass_g_per_m2 ~ buckthorn_stems_per_m2_subplot , data = invasivesp)  
+m1
+```
+
+```{r tidy_coef, echo=TRUE, eval = TRUE}
+coef_tbl <- tidy(m1)
+coef_tbl
+```
+
+```{r exploratory_scatter, echo=TRUE, eval = TRUE}
+
+ggplot(invasivesp, aes(x =buckthorn_stems_per_m2_subplot, y = earthworm_biomass_g_per_m2 , color = soil_type)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Buckthorn Stems",
+    y = "Earthworm Biomass (g/m2)",
+    color = "soil_type",
+    title = "Scatterplot"
+  ) +
+  theme_classic(base_size = 20)
+```
+
+>These visuals help me to begin to answer my research questions. They visualize the relationship between buckthorn stems and the earthworm biomass and help me determine if the linear model is a good fit. In general, it seems that there is a slight positive correlation between the two variables. For every increase in the number of buckthorn stems, the earthworm biomasses increases by 0.3001596 g/m2. The different slopes between the different soil types suggest that that soil type is also a factor that might influence the relationship between earthworm biomass and the number of buckthorn stems. 
+
+## 3. Possible question and method: Data Analysis Plan
+
+```{r choose_vars, echo=TRUE, eval = TRUE}
+
+response_var <- "earthworm_biomass_g_per_m2"
+group_var    <- "buckthorn_stems_per_m2_subplot "
+
+response_var
+group_var
+```
+
+>I chose `earthworm_biomass_g_per_m2` as my response variable and `buckthorn_stems_per_m2_subplot` as my explanatory/grouping variable.
+
+```{r summary-statistics-earthworm, echo=TRUE, eval = TRUE}
+invasivesp %>% summarise(
+  n = n(),
+  n_missing = sum(is.na(earthworm_biomass_g_per_m2)),
+  mean = mean(earthworm_biomass_g_per_m2, na.rm = TRUE),
+  sd = sd(earthworm_biomass_g_per_m2, na.rm = TRUE),
+  median = median(earthworm_biomass_g_per_m2, na.rm = TRUE),
+  iqr = IQR(earthworm_biomass_g_per_m2, na.rm = TRUE),
+  q25 = quantile(earthworm_biomass_g_per_m2, 0.25, na.rm = TRUE),
+  q75 = quantile(earthworm_biomass_g_per_m2, 0.75, na.rm = TRUE),
+    .groups = "drop"
+)
+```
+
+```{r summary-statistics-buckthorn, echo=TRUE, eval = TRUE}
+invasivesp %>% summarise(
+  n = n(),
+  n_missing = sum(is.na(buckthorn_stems_per_m2_subplot)),
+  mean = mean(buckthorn_stems_per_m2_subplot, na.rm = TRUE),
+  sd = sd(buckthorn_stems_per_m2_subplot, na.rm = TRUE),
+  median = median(buckthorn_stems_per_m2_subplot, na.rm = TRUE),
+  iqr = IQR(buckthorn_stems_per_m2_subplot, na.rm = TRUE),
+  q25 = quantile(buckthorn_stems_per_m2_subplot, 0.25, na.rm = TRUE),
+  q75 = quantile(buckthorn_stems_per_m2_subplot, 0.75, na.rm = TRUE),
+    .groups = "drop"
+)
+```
+
+>In order to answer my question I will need to perform a t-test to compare the mean values of `earthworm_biomass_g_per_m2` in the different soil types-silty vs sandy. My comparison groups will be the earth worm biomass in the silty soil and the earth worm biomass in the sandy soil. I will also perform a a  t-test to compare the mean values of `buckthorn_stems_per_m2_subplot` in the different soil types. My comparison groups will be the number of buckthorn stems in the silty soil and the mean number of buckthorn stems in the sandy soil. In order to support my hypothesized answer there would need to be statistically signifcant evidence that the there is a difference in the mean earthworm biomass in the different soils, as well as a difference in the mean number of buckthorn stems in the different soil types. 
