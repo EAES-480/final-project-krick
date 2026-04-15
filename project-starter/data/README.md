@@ -5,7 +5,13 @@ Place data file(s) in this folder.
 Then, include codebooks (variables, and their descriptions) for your data file(s)
 using the following format.
 
-## Mueller_buckthorn_gradient_JAE_2018_Dryad_data.csv
+# Mueller_buckthorn_gradient_JAE_2018_Dryad_data.csv
+
+## Dimensions
+- **Rows:** 12
+- **Columns:** 51
+
+## Codebook
 
 - `plot_id`: identifier for each unique plot
 - **`soil_type`: plot soil types, either sandy or silty**
