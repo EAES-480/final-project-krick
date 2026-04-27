@@ -1,7 +1,7 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+title: "Relationship between Earthworm Biomass and Invasive Plant Species Rhamnus cathartica"
+subtitle: "In Different Soil Types"
+author: "Rachel Krick"
 institute: "University of Illinois at Chicago"
 date: "`r Sys.Date()`"
 output:
@@ -30,7 +30,9 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 ```
 
 ```{r load-data, include=FALSE}
-# Load your data here
+invasivesp <- read_csv("../data/Mueller_buckthorn_gradient_JAE_2018_Dryad_data.csv")%>%
+  clean_names()%>%
+  drop_na()
 ```
 
 ```{r}
