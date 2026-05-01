@@ -1,6 +1,6 @@
 ---
-title: "Relationship between Earthworm Biomass and Invasive Plant Species Rhamnus cathartica"
-subtitle: "In Different Soil Types"
+title: "Comparing Earthworm Biomass and Invasive Species Density Across Soil Types"
+subtitle:
 author: "Rachel Krick"
 institute: "University of Illinois at Chicago"
 date: "`r Sys.Date()`"
@@ -22,6 +22,9 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
+library(broom)
+library(lubridate)
+library(janitor)
 ```
 
 ```{r setup, include=FALSE}
@@ -35,146 +38,245 @@ invasivesp <- read_csv("../data/Mueller_buckthorn_gradient_JAE_2018_Dryad_data.c
   drop_na()
 ```
 
-```{r}
+```{r slide-style,  include=FALSE}
 style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
+  title_slide_background_image = "img/Rhamnus-cathartica-fruits.jpg",
+  title_slide_text_color = "white"
 )
 ```
 
 
 class: center, middle
 
-## A statement of the overall goal / research question
+# **Research Questions:**  
+
+  1. Is there a statistically significant relationship between the invasive species and the earth worm biomass? What does this mean for how the invasive species impacts earthworm biomass? 
+  
+  2. Does the mean earthworm biomass vary by soil type? Is there a statistically significant difference in the means? 
+  
+  3. Does the mean number of buckthorn stems vary by soil type? Is there a statistically significant difference in the means? 
+
+## **Overall:**  
+ What does this mean for how soil type might play a role in the relationship between invasive species and earthworm biomass? 
+
+---
+# Introduction & My Data
+
+**Study looked at how invasive plant species influence ecological properties**
+
+Two different methods of sampling:  
+
+  * (1) **large-scale stratified sampling** of vegetation  across multiple sites where researchers recorded species composition, abundance, and environmental variables in areas with and without invasive plants
+  
+  * (2) **finer-scale paired-plot studies**, where invaded plots were directly matched with nearby uninvaded plots under similar conditions to better isolate invasion effects. 
+
+##*Rhamnus cathartica*
+- a deciduous invasive shrub with a non-native range that includes most of the United States and Canada 
+- commonly known as **Buckthorn**
+- unique because its leaves have higher concentrations of nutrients, develop earlier in spring, and senesce later in fall
+- studies typically observe greater nutrient pools and fluxes in invaded stands 
+
+---
+#My Variables
+- **`buckthorn_stems_per_m2_subplot`**: the number of buckthorn stems in each 3 m diameter subplot
+ > measures the density of invasive buckthorn plants
+
+- **`earthworm_biomass_g_per_m2`**: biomass of earthworms in each subplot
+
+- **`soil_type`**: plot soil types, either sandy or silty
+
 
 ---
 
-class: inverse, center, middle
-
-# Section title
-
----
-
-# Hello World
-
-- Click the `Knit` button to compile your presentation
-
-- Make sure to commit and push all resulting files to your GitHub repo
-
----
-
-class: inverse, middle, center
-
-# Using xaringan
-
----
-
-# xaringan
-
-- The presentation is created using the `xaringan` package
-
-- Use `---` to separate slides and `--` for incremental builds
-
---
-
-- Like this
-
----
-
-# Layouts
-
-You can use plain text
-
-- or bullet points
+class: center, middle
+#Visualizing the Relationship Between Buckthorn and Earthworm Biomass
 
 .pull-left[
-or text in two columns $^*$
+```{r smooth_lm, echo=FALSE, fig.width= 6, out.width="90%"}
+
+ggplot(invasivesp, aes(x =buckthorn_stems_per_m2_subplot, y = earthworm_biomass_g_per_m2)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", se = TRUE, color="darkgreen") +
+  labs(
+    x = "Buckthorn Stems per m²",
+    y = "Earthworm Biomass (g/m²)",
+    title = "Relationship between Earthworm Biomass & Buckthorn Stem Density"
+  ) +
+  theme_classic(base_size = 9)
+```
 ]
+
+
 .pull-right[
-- like
-- this
+```{r exploratory_scatter, echo=FALSE, eval = TRUE, fig.width= 6, out.width="90%"}
+
+ggplot(invasivesp, aes(x =buckthorn_stems_per_m2_subplot, y = earthworm_biomass_g_per_m2 , color = soil_type)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Buckthorn Stems per m²",
+    y = "Earthworm Biomass (g/m²)",
+    color = "soil_type",
+    title = "Relationship between Earthworm Biomass & Buckthorn Stem Density by Soil Type"
+  ) +
+  theme_classic(base_size = 9)
+```
 ]
 
-.footnote[
-[*] And add footnotes
-]
-
 ---
 
-# Code
-
-```{r boring-regression}
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
-```
-
----
-
-# Plots
-
-```{r recode-species, echo = FALSE}
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-iris_modified <- iris %>%
-  mutate(Species = fct_other(Species, keep = "setosa"))
-```
-
-```{r plot-iris, echo = FALSE}
-# Code hidden with echo = FALSE
-# Uses modified iris dataset from previous chunk
-# Play around with height and width until you're happy with the look
-ggplot(data = iris_modified, mapping = aes(x = Sepal.Width, y = Sepal.Length, color = Species)) +
-  geom_point() + 
-  theme_minimal() # theme options: https://ggplot2.tidyverse.org/reference/ggtheme.html
-```
-
----
-
-## Plot and text
+class: center, middle
+# Visualization of Difference in Means
 
 .pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
+```{r two_sample_plot, echo=FALSE, eval=TRUE,  fig.width= 6, out.width="90%"}
+ggplot(invasivesp, aes(x = soil_type, y = earthworm_biomass_g_per_m2)) +
   geom_boxplot() +
-  theme_minimal()
+  labs(
+    title = "Earthworm Biomass by Soil Type",
+    x = "Soil Type",
+    y = "Earthworm Biomass (g/m²)"
+  ) +
+  theme_classic(base_size = 14)
 ```
+]
+
+.pull-right[
+```{r two_sample_plot2, echo=FALSE, eval=TRUE,  fig.width= 6, out.width="90%"}
+ggplot(invasivesp, aes(x = soil_type, y = buckthorn_stems_per_m2_subplot)) +
+  geom_boxplot() +
+  labs(
+    title = "Buckthorn Stem Density by Soil Type",
+    x = "Soil Type",
+    y = "Buckthorn Stems per m²"
+  ) +
+  theme_classic(base_size = 14)
+```
+]
+---
+**T-Test:**
+Does the mean earthworm biomass vary by soil type? Is there a statistically significant difference in the means? 
+
+.pull-left[
+
+```{r choose_two_sample, echo=TRUE, eval=FALSE}
+x1 <- invasivesp%>%
+  filter(soil_type == "silty") %>%
+  pull(earthworm_biomass_g_per_m2)
+
+x2 <- invasivesp%>%
+  filter(soil_type == "sandy") %>%
+  pull(earthworm_biomass_g_per_m2)
+
+```
+
+```{r two_sample_summary, echo=TRUE, eval=FALSE}
+xbar1 <- mean(x1, na.rm = TRUE)
+xbar2 <- mean(x2, na.rm = TRUE)
+s1 <- sd(x1, na.rm = TRUE)
+s2 <- sd(x2, na.rm = TRUE)
+n1 <- sum(!is.na(x1))
+n2 <- sum(!is.na(x2))
+mean_diff <- xbar1 - xbar2
+tibble(
+  xbar1 = xbar1,
+  xbar2 = xbar2,
+  mean_diff = mean_diff
+)
+```
+]
+
+.pull-right[
+```{r two_sample_ttest, echo=TRUE, eval=FALSE}
+t.test(x1, x2)
+```
+
+- x̄1=8.32	
+- x̄2=6.814286	
+- x̄₁ − x̄₂= 1.505714	
+- t= 1.096
+- df= 9.2415
+- p-value= 0.3005
+- CI= -1.587664 to 4.599092
+
+
 ]
 
 ---
 
-# Tables
+**T-Test:** 
+Does the mean number of buckthorn stems vary by soil type? Is there a statistically significant difference in the means? 
 
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
+.pull-left[
+```{r choose_two_sample2, echo=TRUE, eval=FALSE}
+y1 <- invasivesp %>%
+  filter(soil_type == "silty") %>%
+  pull(buckthorn_stems_per_m2_subplot)
 
-```{r iris-table, echo = FALSE}
-kable(head(iris), format = "html")
+y2 <- invasivesp %>%
+  filter(soil_type == "sandy") %>%
+  pull(buckthorn_stems_per_m2_subplot)
+
 ```
+
+```{r two_sample_summary2, echo=TRUE, eval=FALSE}
+ybar1 <- mean(y1, na.rm = TRUE)
+ybar2 <- mean(y2, na.rm = TRUE)
+s1 <- sd(y1, na.rm = TRUE)
+s2 <- sd(y2, na.rm = TRUE)
+n1 <- sum(!is.na(y1))
+n2 <- sum(!is.na(y2))
+mean_diff <- ybar1 - ybar2
+tibble(
+  ybar1 = ybar1,
+  ybar2 = ybar2,
+  mean_diff = mean_diff
+)
+```
+]
+
+.pull-right[
+```{r two_sample_ttest2, echo=TRUE, eval=FALSE}
+t.test(y1, y2)
+```
+
+- ȳ1= 9.94	
+- ȳ2= 3.914286	
+- ȳ₁ − ȳ₂ = 6.025714
+- t=  2.1897
+- df= 4.5444
+- p-value= 0.08557
+- CI= -1.266736 to 13.318164
+
+]
 
 ---
 
-# Images
+# Results/Analysis
+##Earth Worm Biomass
+- The mean earthworm biomass was higher in silty soil than in sandy soil.
+- Because 0 is included in the interval, there is not strong evidence of a significant difference between the   two soil types.
+- The test result was not statistically significant.
+> Because the p-value is greater than 0.05, we fail to reject the null hypothesis.
 
-```{r castle, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "Image credit: Photo by Enjoy Illinois."}
-include_graphics("img/chicago-fall.jpeg")
-```
+- This indicates there is insufficient evidence to conclude that earthworm 
+  biomass differs significantly between silty and sandy soils.
+  
+---
+# Results/Analysis
+## Buckthorn Stem Density 
+- The mean number of buckthorn stems was higher in silty soil than in sandy soil.
+- Because 0 is included in the interval, there is not strong evidence of a significant difference between the two soil types.
+- The test result was also not statistically significant.
+> Because the p-value is greater than 0.05, we fail to reject the null hypothesis.
 
+- This indicates there is insufficient evidence to conclude that buckthorn stem density differs significantly between the two soil types.
 
 ---
 
-# Feeling adventurous?
+# Conclusions
+- Soil type alone may not be a strong predictor of the relationship between invasive buckthorn and earthworm biomass in this study. 
 
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
-
-- You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
-
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
-
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
+- Both variables were higher in silty soils: this may indicate that silty soils provide more favorable conditions for both earthworms and buckthorn growth. 
+  - Silty soils often retain more moisture and nutrients than sandy soils
+  -Higher mean values in silty soils may reflect more favorable moisture and nutrient conditions

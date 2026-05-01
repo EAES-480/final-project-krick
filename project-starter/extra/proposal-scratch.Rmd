@@ -32,6 +32,19 @@ glimpse (invasivesp)
 ## 2. Exploratory Visualization
 ```{r smooth_lm, echo=TRUE, eval = TRUE}
 
+ggplot(invasivesp, aes(x =buckthorn_basal_area_per_m2_plot, y = earthworm_biomass_g_per_m2)) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", se = TRUE, color="darkgreen") +
+  labs(
+    x = "Buckthorn Stems",
+    y = "Earthworm Biomass (g/m2)",
+    title = "Scatterplot with linear fit"
+  ) +
+  theme_classic(base_size = 20)
+```
+
+```{r smooth_lm, echo=TRUE, eval = TRUE}
+
 ggplot(invasivesp, aes(x =buckthorn_stems_per_m2_subplot, y = earthworm_biomass_g_per_m2)) +
   geom_point(size = 3, alpha = 0.8) +
   geom_smooth(method = "lm", se = TRUE, color="darkgreen") +
@@ -112,6 +125,28 @@ invasivesp %>% summarise(
 
 >In order to answer my question I will need to perform a t-test to compare the mean values of `earthworm_biomass_g_per_m2` in the different soil types-silty vs sandy. My comparison groups will be the earth worm biomass in the silty soil and the earth worm biomass in the sandy soil. I will also perform a a  t-test to compare the mean values of `buckthorn_stems_per_m2_subplot` in the different soil types. My comparison groups will be the number of buckthorn stems in the silty soil and the mean number of buckthorn stems in the sandy soil. In order to support my hypothesized answer there would need to be statistically signifcant evidence that the there is a difference in the mean earthworm biomass in the different soils, as well as a difference in the mean number of buckthorn stems in the different soil types. 
 
+```{r two_sample_plot, echo=TRUE, eval=TRUE}
+ggplot(invasivesp, aes(x = soil_type, y = earthworm_biomass_g_per_m2)) +
+  geom_boxplot() +
+  labs(
+    title = "Earthworm Biomass by Soil Type",
+    x = "Soil Type",
+    y = "Earthworm Biomass (g/m²)"
+  ) +
+  theme_classic()
+```
+
+```{r two_sample_plot2, echo=TRUE, eval=TRUE}
+ggplot(invasivesp, aes(x = soil_type, y = buckthorn_stems_per_m2_subplot)) +
+  geom_boxplot() +
+  labs(
+    title = "Buckthorn Stem Density by Soil Type",
+    x = "Soil Type",
+    y = "Buckthorn Stems per m²"
+  ) +
+  theme_classic()
+```
+
 ```{r choose_two_sample, echo=TRUE, eval=TRUE}
 x1 <- invasivesp%>%
   filter(soil_type == "silty") %>%
@@ -184,4 +219,10 @@ tibble(
 
 ```{r two_sample_ttest, echo=TRUE, eval=TRUE}
 t.test(y1, y2)
+```
+
+# Images
+
+```{r castle, echo = FALSE, out.width = "60%", fig.align = "center", fig.cap = "Image credit: Photo by Enjoy Illinois."}
+include_graphics("img/chicago-fall.jpeg")
 ```
