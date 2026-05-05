@@ -46,20 +46,6 @@ style_xaringan(
 ```
 
 
-class: center, middle
-
-# **Research Questions:**  
-
-  1. Is there a statistically significant relationship between the invasive species and the earth worm biomass? What does this mean for how the invasive species impacts earthworm biomass? 
-  
-  2. Does the mean earthworm biomass vary by soil type? Is there a statistically significant difference in the means? 
-  
-  3. Does the mean number of buckthorn stems vary by soil type? Is there a statistically significant difference in the means? 
-
-## **Overall:**  
- What does this mean for how soil type might play a role in the relationship between invasive species and earthworm biomass? 
-
----
 # Introduction & My Data
 
 **Study looked at how invasive plant species influence ecological properties**
@@ -84,6 +70,21 @@ Two different methods of sampling:
 - **`earthworm_biomass_g_per_m2`**: biomass of earthworms in each subplot
 
 - **`soil_type`**: plot soil types, either sandy or silty
+
+
+---
+class: center, middle
+
+# **Research Questions:**  
+
+  1. Is there a statistically significant relationship between the invasive species and the earth worm biomass? What does this mean for how the invasive species impacts earthworm biomass? 
+  
+  2. Does the mean earthworm biomass vary by soil type? Is there a statistically significant difference in the means? 
+  
+  3. Does the mean number of buckthorn stems vary by soil type? Is there a statistically significant difference in the means? 
+
+## **Overall:**  
+ What does this mean for how soil type might play a role in the relationship between invasive species and earthworm biomass? 
 
 
 ---
@@ -279,4 +280,4 @@ t.test(y1, y2)
 
 - Both variables were higher in silty soils: this may indicate that silty soils provide more favorable conditions for both earthworms and buckthorn growth. 
   - Silty soils often retain more moisture and nutrients than sandy soils
-  -Higher mean values in silty soils may reflect more favorable moisture and nutrient conditions
+  - Higher mean values in silty soils may reflect more favorable moisture and nutrient conditions
