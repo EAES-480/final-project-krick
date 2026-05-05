@@ -9,15 +9,15 @@ My presentation can be found [here](presentation/presentation.html).
 ## Introduction & Research Questions
 
 The data comes from a study that looked at how invasive plant species influence ecological properties. 
-They also aimed to "highlight ways of improving the design and interpretation of observational studies that assess the impacts of invasive plants."
+They also aimed to "highlight ways of improving the design and interpretation of observational studies that assess the impacts of invasive plants.
+The data contains 12 observations and 51  variables. 
 
-The dataset combines two different methods of sampling:  
+The  collection of this data combines two different methods of sampling:  
 
   * (1) large-scale stratified sampling of vegetation  across multiple sites where researchers recorded species composition, abundance, and environmental variables in areas with and without invasive plants
   * (2) finer-scale paired-plot studies, where invaded plots were directly matched with nearby uninvaded plots under similar conditions to better isolate invasion effects. 
   
-The data has `r nrow(invasivesp)` observations and `r ncol(invasivesp)` variables. My project looks at the impact of 
-the invasive species (*Rhamnus cathartica* or buck thorn) on earth worm biomass. It also looks at how soil type
+My project looks at the impact of the invasive species (*Rhamnus cathartica* or buck thorn) on earth worm biomass. It also looks at how soil type
 impacts earthworm biomass and the invasive species. 
 
 My analysis of the data answers the following questions:
@@ -54,7 +54,7 @@ The t-test for buckthorn stems by soil type reveals the following:
   - Because the p-value is greater than 0.05, we fail to reject the null hypothesis.
 - This indicates there is insufficient evidence to conclude that buckthorn stem density differs significantly between the two soil types.
 
-##Conclusion 
+## Conclusion 
 
 From my statistical analysis of the data I found that soil type alone may not be a strong predictor 
 of the relationship between invasive buckthorn and earthworm biomass in this study. However,both variables 
