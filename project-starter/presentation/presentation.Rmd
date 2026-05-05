@@ -279,5 +279,4 @@ t.test(y1, y2)
 - Soil type alone may not be a strong predictor of the relationship between invasive buckthorn and earthworm biomass in this study. 
 
 - Both variables were higher in silty soils: this may indicate that silty soils provide more favorable conditions for both earthworms and buckthorn growth. 
-  - Silty soils often retain more moisture and nutrients than sandy soils
   - Higher mean values in silty soils may reflect more favorable moisture and nutrient conditions
