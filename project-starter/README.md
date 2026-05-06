@@ -44,7 +44,7 @@ In order to use the data, I first had to
 
 ## Results
 
-There is a positive correlation between buckthorn stems and earth worm biomass). For every additional buckthorn stem present per m² in a subplot, the earthworm biomass increases by approximately 0.300 g/m².
+There is a positive correlation between buckthorn stems and earth worm biomass. For every additional buckthorn stem present per m² in a subplot, the earthworm biomass increases by approximately 0.300 g/m².
 The statistical analysis for earth worm biomass by soil type revealed that the mean earthworm biomass was higher in silty soil than in sandy soil (x̄₁ − x̄₂= 1.50571).
 Moreover, because 0 is included in the interval (CI= -1.587664 to 4.599092), there is not strong evidence of a significant difference between the two soil types.
 Finally, the test result was not statistically significant. Because the p-value is greater than 0.05 (p-value= 0.3005), we fail to reject the null hypothesis.
