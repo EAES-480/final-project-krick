@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Comparing Earthworm Biomass and Invasive Species Density Across Soil Types</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Rachel Krick" />
+    <meta name="date" content="2026-05-06" />
+    <script src="libs/header-attrs-2.31/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Comparing Earthworm Biomass and Invasive Species Density Across Soil Types
+]
+.author[
+### Rachel Krick
+]
+.institute[
+### University of Illinois at Chicago
+]
+.date[
+### 2026-05-06
+]
+
+---
+
+
+
+
+
+
+
+
+
+
+
+# Introduction &amp; My Data
+
+**Study looked at how invasive plant species influence ecological properties**
+
+Two different methods of sampling:  
+
+  * (1) **large-scale stratified sampling** of vegetation  across multiple sites where researchers recorded species composition, abundance, and environmental variables in areas with and without invasive plants
+  
+  * (2) **finer-scale paired-plot studies**, where invaded plots were directly matched with nearby uninvaded plots under similar conditions to better isolate invasion effects. 
+
+##*Rhamnus cathartica*
+- a deciduous invasive shrub with a non-native range that includes most of the United States and Canada 
+- commonly known as **Buckthorn**
+- unique because its leaves have higher concentrations of nutrients, develop earlier in spring, and senesce later in fall
+- studies typically observe greater nutrient pools and fluxes in invaded stands 
+
+---
+#My Variables
+- **`buckthorn_stems_per_m2_subplot`**: the number of buckthorn stems in each 3 m diameter subplot
+ &gt; measures the density of invasive buckthorn plants
+
+- **`earthworm_biomass_g_per_m2`**: biomass of earthworms in each subplot
+
+- **`soil_type`**: plot soil types, either sandy or silty
+
+
+---
+class: center, middle
+
+# **Research Questions:**  
+
+  1. Is there a statistically significant relationship between the invasive species and the earth worm biomass? What does this mean for how the invasive species impacts earthworm biomass? 
+  
+  2. Does the mean earthworm biomass vary by soil type? Is there a statistically significant difference in the means? 
+  
+  3. Does the mean number of buckthorn stems vary by soil type? Is there a statistically significant difference in the means? 
+
+## **Overall:**  
+ What does this mean for how soil type might play a role in the relationship between invasive species and earthworm biomass? 
+
+
+---
+
+class: center, middle
+#Visualizing the Relationship Between Buckthorn and Earthworm Biomass
+
+.pull-left[
+
+```
+## `geom_smooth()` using formula = 'y ~ x'
+```
+
+&lt;img src="presentation_files/figure-html/smooth_lm-1.png" alt="" width="90%" /&gt;
+]
+
+
+.pull-right[
+
+```
+## `geom_smooth()` using formula = 'y ~ x'
+```
+
+&lt;img src="presentation_files/figure-html/exploratory_scatter-1.png" alt="" width="90%" /&gt;
+]
+
+---
+
+class: center, middle
+# Visualization of Difference in Means
+
+.pull-left[
+&lt;img src="presentation_files/figure-html/two_sample_plot-1.png" alt="" width="90%" /&gt;
+]
+
+.pull-right[
+&lt;img src="presentation_files/figure-html/two_sample_plot2-1.png" alt="" width="90%" /&gt;
+]
+---
+**T-Test:**
+Does the mean earthworm biomass vary by soil type? Is there a statistically significant difference in the means? 
+
+.pull-left[
+
+
+``` r
+x1 &lt;- invasivesp%&gt;%
+  filter(soil_type == "silty") %&gt;%
+  pull(earthworm_biomass_g_per_m2)
+
+x2 &lt;- invasivesp%&gt;%
+  filter(soil_type == "sandy") %&gt;%
+  pull(earthworm_biomass_g_per_m2)
+```
+
+
+``` r
+xbar1 &lt;- mean(x1, na.rm = TRUE)
+xbar2 &lt;- mean(x2, na.rm = TRUE)
+s1 &lt;- sd(x1, na.rm = TRUE)
+s2 &lt;- sd(x2, na.rm = TRUE)
+n1 &lt;- sum(!is.na(x1))
+n2 &lt;- sum(!is.na(x2))
+mean_diff &lt;- xbar1 - xbar2
+tibble(
+  xbar1 = xbar1,
+  xbar2 = xbar2,
+  mean_diff = mean_diff
+)
+```
+]
+
+.pull-right[
+
+``` r
+t.test(x1, x2)
+```
+
+- x̄1=8.32	
+- x̄2=6.814286	
+- x̄₁ − x̄₂= 1.505714	
+- t= 1.096
+- df= 9.2415
+- p-value= 0.3005
+- CI= -1.587664 to 4.599092
+
+
+]
+
+---
+
+**T-Test:** 
+Does the mean number of buckthorn stems vary by soil type? Is there a statistically significant difference in the means? 
+
+.pull-left[
+
+``` r
+y1 &lt;- invasivesp %&gt;%
+  filter(soil_type == "silty") %&gt;%
+  pull(buckthorn_stems_per_m2_subplot)
+
+y2 &lt;- invasivesp %&gt;%
+  filter(soil_type == "sandy") %&gt;%
+  pull(buckthorn_stems_per_m2_subplot)
+```
+
+
+``` r
+ybar1 &lt;- mean(y1, na.rm = TRUE)
+ybar2 &lt;- mean(y2, na.rm = TRUE)
+s1 &lt;- sd(y1, na.rm = TRUE)
+s2 &lt;- sd(y2, na.rm = TRUE)
+n1 &lt;- sum(!is.na(y1))
+n2 &lt;- sum(!is.na(y2))
+mean_diff &lt;- ybar1 - ybar2
+tibble(
+  ybar1 = ybar1,
+  ybar2 = ybar2,
+  mean_diff = mean_diff
+)
+```
+]
+
+.pull-right[
+
+``` r
+t.test(y1, y2)
+```
+
+- ȳ1= 9.94	
+- ȳ2= 3.914286	
+- ȳ₁ − ȳ₂ = 6.025714
+- t=  2.1897
+- df= 4.5444
+- p-value= 0.08557
+- CI= -1.266736 to 13.318164
+
+]
+
+---
+
+# Results/Analysis
+##Earth Worm Biomass
+- The mean earthworm biomass was higher in silty soil than in sandy soil.
+- Because 0 is included in the interval, there is not strong evidence of a significant difference between the   two soil types.
+- The test result was not statistically significant.
+&gt; Because the p-value is greater than 0.05, we fail to reject the null hypothesis.
+
+- This indicates there is insufficient evidence to conclude that earthworm 
+  biomass differs significantly between silty and sandy soils.
+  
+---
+# Results/Analysis
+## Buckthorn Stem Density 
+- The mean number of buckthorn stems was higher in silty soil than in sandy soil.
+- Because 0 is included in the interval, there is not strong evidence of a significant difference between the two soil types.
+- The test result was also not statistically significant.
+&gt; Because the p-value is greater than 0.05, we fail to reject the null hypothesis.
+
+- This indicates there is insufficient evidence to conclude that buckthorn stem density differs significantly between the two soil types.
+
+---
+
+# Conclusions
+- Soil type alone may not be a strong predictor of the relationship between invasive buckthorn and earthworm biomass in this study. 
+
+- Both variables were higher in silty soils: this may indicate that silty soils provide more favorable conditions for both earthworms and buckthorn growth. 
+  - Higher mean values in silty soils may reflect more favorable moisture and nutrient conditions
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "ratio": "16:9",
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

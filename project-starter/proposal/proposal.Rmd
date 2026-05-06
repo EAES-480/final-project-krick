@@ -26,7 +26,7 @@ invasivesp <- read_csv("../data/Mueller_buckthorn_gradient_JAE_2018_Dryad_data.c
 head (invasivesp)
 ```
 
-My data comes from a research article titled "A tale of two studies: Detection and attribution of the impacts of invasive plants in observational surveys" by Kevin E. Mueller, Alexandra G. Lodge, Alexander M. Roth, Timothy J. S. Whitfeld, Sarah E. Hobbie, Peter B. Reich. This study looked at how invasive plant species influence ecological properties. They also aimed to "highlight ways of improving the design and interpretation of observational studies that assess the impacts of invasive plants."  
+The data comes from a study research article titled "A tale of two studies: Detection and attribution of the impacts of invasive plants in observational surveys" by Kevin E. Mueller, Alexandra G. Lodge, Alexander M. Roth, Timothy J. S. Whitfeld, Sarah E. Hobbie, Peter B. Reich. This study looked at how invasive plant species influence ecological properties. They also aimed to "highlight ways of improving the design and interpretation of observational studies that assess the impacts of invasive plants."  
 
 The dataset combines two different methods of sampling:  
 
