@@ -37,5 +37,30 @@ using the following format.
 - `total_annual_leaf_litter_p_g_per_m2`: annual flux of phosphorus through leaf litter fall in each plot
 - `total_annual_leaf_litter_n_g_per_m2`: annual flux of nitrogen through leaf litter fall in each plot
 - `total_leaf_litter_k_%`: concentration of potassium in total leaf litter fall from Autumn
+- `total_leaf_litter_ca_%`: concentration of calcium in total leaf litterfall from Autumn
+- `total_leaf_litter_p_%`: concentration of phosphorus in total leaf litterfall from Autumn
+- `total_leaf_litter_n_%`: concentration of nitrogen in total leaf litterfall from Autumn
+- `non_buckthorn_leaf_litter_k_%`: weighted average concentration of potassium in leaf litterfall from all species other than buckthorn
+- `non_buckthorn_leaf_litter_ca_%`: weighted average concentration of calcium in leaf litterfall from all species other than buckthorn
+- `non_buckthorn_leaf_litter_p_%`:weighted average concentration of phosphorus in leaf litterfall from all species other than buckthorn
+- `non_buckthorn_leaf_litter_n_%`: weighted average concentration of nitrogen in leaf litterfall from all species other than buckthorn
+- `buckthorn_green_leaves_k_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `maple_green_leaves_k_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `buckthorn_leaf_litter_k_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `maple_leaf_litter_k_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `oak_leaf_litter_k_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `buckthorn_green_leaves_ca_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `maple_green_leaves_ca_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `buckthorn_leaf_litter_ca_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `maple_leaf_litter_ca_mg_per_g`:nutrient concentrations in green leaves or leaf litter of the given species
+- `oak_leaf_litter_ca_mg_per_g`:	nutrient concentrations in green leaves or leaf litter of the given species
+- `buckthorn_green_leaves_p_mg_per_g`:nutrient concentrations in green leaves or leaf litter of the given species
+- `maple_green_leaves_p_mg_per_g`: nutrient concentrations in green leaves or leaf litter of the given species
+- `buckthorn_leaf_litter_p_mg_per_g`:	nutrient concentrations in green leaves or leaf litter of the given species
+- `maple_leaf_litter_p_mg_per_g`:	nutrient concentrations in green leaves or leaf litter of the given species
+- `oak_leaf_litter_p_mg_per_g`:	nutrient concentrations in green leaves or leaf litter of the given species
+- `buckthorn_green_leaves_n_%`:	nutrient concentrations in green leaves or leaf litter of the given species
+- `maple_green_leaves_n_%`:	nutrient concentrations in green leaves or leaf litter of the given species
+- `buckthorn_leaf_litter_n _%`:nutrient concentrations in green leaves or leaf litter of the given species
 
 - ...
