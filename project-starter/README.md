@@ -39,7 +39,20 @@ My analysis of the data answers the following questions:
 
 ## Methodology
 
-In order to use the data, I first had to
+The dataset was imported from Mueller_buckthorn_gradient_JAE_2018_Dryad_data.csv using the `read_csv()` function. 
+Variable names were standardized using `clean_names()`, and rows containing missing values were removed with 
+`drop_na()` to ensure complete observations for analysis.
+
+The primary response variable was earthworm biomass (earthworm_biomass_g_per_m2), 
+and the primary explanatory variable was buckthorn stem density (buckthorn_stems_per_m2_subplot). 
+Soil type (silty versus sandy) was also included as a grouping variable to investigate whether differences 
+in soil conditions influenced earthworm biomass and buckthorn abundance.
+
+Exploratory scatterplots and boxplots were created using `ggplot2` to visualize relationships between variables 
+and compare distributions across soil types. A simple linear regression model was also fitted to examine the 
+relationship between buckthorn stem density and earthworm biomass.Finally, two-sample t-tests were conducted 
+using the `t.test()` function to compare mean earthworm biomass and mean buckthorn stem density between 
+silty and sandy soils.
 
 
 ## Results
